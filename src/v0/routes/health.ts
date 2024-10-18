@@ -1,5 +1,5 @@
 import { createFactory } from "../../utils/routeFactory";
-import { HealthController } from "../controllers/health.controller";
+import { HealthController } from "../controllers/healthController";
 import { HealthService } from "../services/health.service";
 import { SystemHealthSchema } from "../types/health";
 
