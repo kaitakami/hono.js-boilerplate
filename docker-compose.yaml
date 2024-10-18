@@ -1,9 +1,13 @@
 services:
   api:
     container_name: api
-    build: .
+    build:
+      context: .
+      args:
+        - NODE_ENV=${NODE_ENV}
+        - PORT=${PORT}
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

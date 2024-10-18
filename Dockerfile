@@ -18,3 +18,8 @@ RUN pnpm run build
 EXPOSE 3000
 
 CMD ["pnpm", "start"]
+
+ARG NODE_ENV
+ARG PORT
+ENV NODE_ENV=$NODE_ENV
+ENV PORT=$PORT
