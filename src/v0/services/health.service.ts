@@ -14,7 +14,6 @@ export class HealthService {
 				};
 			},
 		},
-		// Add more health checks here
 	];
 
 	async checkHealth(): Promise<SystemHealth> {

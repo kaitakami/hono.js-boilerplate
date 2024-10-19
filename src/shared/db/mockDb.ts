@@ -1,7 +1,7 @@
 export async function mockDbCheck() {
 	// Simulate a database check
 	await new Promise((resolve) => setTimeout(resolve, 100));
-	const isHealthy = Math.random() > 0.1; // 90% chance of being healthy
+	const isHealthy = Math.random() > 0.1;
 	return {
 		status: isHealthy ? "ok" : "error",
 		message: isHealthy

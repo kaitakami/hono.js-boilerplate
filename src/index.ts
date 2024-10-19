@@ -14,6 +14,8 @@ import { loadRoutes } from "./utils/routeLoader";
 
 dotenv.config();
 
+const version = "v0";
+
 const customLogger = async (c: Context, next: () => Promise<void>) => {
 	const requestId = crypto.randomUUID();
 	c.set("requestId", requestId);
@@ -37,38 +39,34 @@ const customLogger = async (c: Context, next: () => Promise<void>) => {
 async function bootstrap() {
 	const app = new OpenAPIHono();
 
-	// Middleware
 	app.use("*", customLogger);
 	app.use("*", cors());
 	app.use("*", compress());
 	app.use("*", secureHeaders());
 	app.use("*", prettyJSON());
 
-	// Automatically load and mount routes
-	const routesDir = join(__dirname, "v0", "routes");
-	const loadedRoutes = await loadRoutes(app, routesDir, "/api/v0");
+	const routesDir = join(__dirname, version, "routes");
+	const loadedRoutes = await loadRoutes(app, routesDir, `/api/${version}`);
 
-	// Log all loaded routes
 	logger.info("Loaded routes:");
 	for (const route of loadedRoutes) {
 		logger.info(`- ${route}`);
 	}
 
-	// Swagger UI
 	app.get("/api/docs", swaggerUI({ url: "/api/docs/openapi.json" }));
 	app.doc31("/api/docs/openapi.json", {
 		openapi: "3.1.0",
 		info: {
 			title: "My API",
-			version: "v0",
+			version,
 		},
 	});
 
 	// Error handling middleware
-	app.onError((err, c) => {
-		logger.error(`Unhandled error: ${err}`);
+	app.onError((error, c) => {
+		logger.error(error, "Unhandled error");
 		return c.json(
-			{ error: "Internal Server Error", message: err.message },
+			{ error: "Internal Server Error", message: error.message },
 			500,
 		);
 	});
@@ -89,8 +87,6 @@ bootstrap().catch((error) => {
 	process.exit(1);
 });
 
-// Graceful shutdown
 process.on("SIGTERM", () => {
 	logger.info("SIGTERM signal received: closing HTTP server");
-	// Implement proper server shutdown logic here
 });
