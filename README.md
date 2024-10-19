@@ -19,12 +19,21 @@ This boilerplate is a Node.js API built with Hono.js and TypeScript.
 - Zod
 - Docker
 
+### Features
+
+1. Simple api versioning
+2. Dockerized (feel free to remove this)
+3. Autoroutes (routes are loaded by adding them to ./src/routes)
+4. Fully-typed
+5. Health endpoint
+6. As unopinionated as possible but with some features
+
 ### Installation
 
 1. Clone the repository
 2. Install dependencies:
 
-```
+```bash
 pnpm install
 ```
 
